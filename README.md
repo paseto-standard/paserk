@@ -34,18 +34,18 @@ A serialized key in PASERK has the format:
 Where `[version]` is an integer, `[data]` is the (*typically* base64url-encoded)
 payload data, and `[type]` is one of the items in the following table:
 
-| PASERK Type   | Meaning                                                        | PASETO Compatibility | \[data\] Encoded? |  
-|---------------|----------------------------------------------------------------|----------------------|-------------------|
-| `lid`         | Unique Identifier for a separate PASERK for `local` PASETOs.   | `local`              | Yes |
-| `local`       | Symmetric key for `local` tokens.                              | `local`              | Yes |
-| `seal`        | Symmetric key wrapped using asymmetric encryption.             | `local`              | Yes |
-| `local-wrap`  | Symmetric key wrapped by another symmetric key.                | `local`              | No  |
-| `local-pw`    | Symmetric key wrapped using password-based encryption.         | `local`              | Yes |
-| `pid`         | Unique Identifier for a separate PASERK for `public` PASETOs.  | `public`             | Yes |
-| `public`      | Public key for verifying `public` tokens.                      | `public`             | Yes |
-| `secret`      | Secret key for signing `public` tokens.                        | `public`             | Yes |
-| `secret-wrap` | Asymmetric secret key wrapped by another symmetric key.        | `public`             | No  |
-| `secret-pw`   | Asymmetric secret key wrapped using password-based encryption. | `public`             | Yes |
+| PASERK Type                           | Meaning                                                        | PASETO Compatibility | \[data\] Encoded? |  
+|---------------------------------------|----------------------------------------------------------------|----------------------|-------------------|
+| [`lid`](types/lid.md)                 | Unique Identifier for a separate PASERK for `local` PASETOs.   | `local`              | Yes               |
+| [`local`](types/local.md)             | Symmetric key for `local` tokens.                              | `local`              | Yes               |
+| [`seal`](types/seal.md)               | Symmetric key wrapped using asymmetric encryption.             | `local`              | Yes               |
+| [`local-wrap`](types/local-wrap.md)   | Symmetric key wrapped by another symmetric key.                | `local`              | No                |
+| [`local-pw`](types/local-pw.md)       | Symmetric key wrapped using password-based encryption.         | `local`              | Yes               |
+| [`pid`](types/pid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs.  | `public`             | Yes               |
+| [`public`](types/public.md)           | Public key for verifying `public` tokens.                      | `public`             | Yes               |
+| [`secret`](types/secret.md)           | Secret key for signing `public` tokens.                        | `public`             | Yes               |
+| [`secret-wrap`](types/secret-wrap.md) | Asymmetric secret key wrapped by another symmetric key.        | `public`             | No                |
+| [`secret-pw`](types/secret-pw.md)     | Asymmetric secret key wrapped using password-based encryption. | `public`             | Yes               |
 
 The version of a PASERK **MUST** match the version of the PASETO it's used with.
 For example, a `k2.local.` PASERK must be used with `v2.local.` tokens.
@@ -57,4 +57,4 @@ As one of the design criteria, it must be safe for PASERKs to be sent out-of-ban
 with its associated PASETO, or included in the footer of a PASETO.
 
 When PASERKs are not included in the footer,  users **SHOULD** include the PASERK 
-ID in the footer.
+ID in the footer (or, in v3/v4 of PASETO, as an implicit assertion).
