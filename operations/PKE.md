@@ -70,7 +70,7 @@ For version 2, the constant `h` in the algorithms below will be set to `k2.local
 
 For version 4, the constant `h` in the algorithms below will be set to `k4.local.`
 (with the trailing period), and the unwrapped key MUST only be used for
-`v2.local.` PASETOs.
+`v4.local.` PASETOs.
 
 #### V2/V4 Encryption
 
