@@ -6,6 +6,10 @@ This is a plaintext serialization of a secret key for PASETO `public` tokens.
 
     k[version].secret.[data]
 
+### ID Serialization
+
+See [sid](sid.md).
+
 ### Version 1
 
 The `[data]` portion will be DER ASN.1 PKCS#1 RSA Private Key,

@@ -34,18 +34,19 @@ A serialized key in PASERK has the format:
 Where `[version]` is an integer, `[data]` is the (*typically* base64url-encoded)
 payload data, and `[type]` is one of the items in the following table:
 
-| PASERK Type                           | Meaning                                                        | PASETO Compatibility | \[data\] Encoded? |  
-|---------------------------------------|----------------------------------------------------------------|----------------------|-------------------|
-| [`lid`](types/lid.md)                 | Unique Identifier for a separate PASERK for `local` PASETOs.   | `local`              | Yes               |
-| [`local`](types/local.md)             | Symmetric key for `local` tokens.                              | `local`              | Yes               |
-| [`seal`](types/seal.md)               | Symmetric key wrapped using asymmetric encryption.             | `local`              | Yes               |
-| [`local-wrap`](types/local-wrap.md)   | Symmetric key wrapped by another symmetric key.                | `local`              | No                |
-| [`local-pw`](types/local-pw.md)       | Symmetric key wrapped using password-based encryption.         | `local`              | Yes               |
-| [`pid`](types/pid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs.  | `public`             | Yes               |
-| [`public`](types/public.md)           | Public key for verifying `public` tokens.                      | `public`             | Yes               |
-| [`secret`](types/secret.md)           | Secret key for signing `public` tokens.                        | `public`             | Yes               |
-| [`secret-wrap`](types/secret-wrap.md) | Asymmetric secret key wrapped by another symmetric key.        | `public`             | No                |
-| [`secret-pw`](types/secret-pw.md)     | Asymmetric secret key wrapped using password-based encryption. | `public`             | Yes               |
+| PASERK Type                           | Meaning                                                                     | PASETO Compatibility | \[data\] Encoded? |  
+|---------------------------------------|-----------------------------------------------------------------------------|----------------------|-------------------|
+| [`lid`](types/lid.md)                 | Unique Identifier for a separate PASERK for `local` PASETOs.                | `local`              | Yes               |
+| [`local`](types/local.md)             | Symmetric key for `local` tokens.                                           | `local`              | Yes               |
+| [`seal`](types/seal.md)               | Symmetric key wrapped using asymmetric encryption.                          | `local`              | Yes               |
+| [`local-wrap`](types/local-wrap.md)   | Symmetric key wrapped by another symmetric key.                             | `local`              | No                |
+| [`local-pw`](types/local-pw.md)       | Symmetric key wrapped using password-based encryption.                      | `local`              | Yes               |
+| [`pid`](types/pid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs. (Public Key)  | `public`             | Yes               |
+| [`sid`](types/sid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs. (Secret Key)  | `public`             | Yes               |
+| [`public`](types/public.md)           | Public key for verifying `public` tokens.                                   | `public`             | Yes               |
+| [`secret`](types/secret.md)           | Secret key for signing `public` tokens.                                     | `public`             | Yes               |
+| [`secret-wrap`](types/secret-wrap.md) | Asymmetric secret key wrapped by another symmetric key.                     | `public`             | No                |
+| [`secret-pw`](types/secret-pw.md)     | Asymmetric secret key wrapped using password-based encryption.              | `public`             | Yes               |
 
 The version of a PASERK **MUST** match the version of the PASETO it's used with.
 For example, a `k2.local.` PASERK must be used with `v2.local.` tokens.

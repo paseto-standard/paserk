@@ -8,6 +8,10 @@ This PASERK is a secret key intended for `public` PASETOs, encrypted with a pass
 
 Where `[data]` is the base64url-encoded payload, defined by each version.
 
+### ID Serialization
+
+See [sid](sid.md).
+
 ## Operations
 
 See [PBKW](../operations/PBKW.md) for the algorithm used.

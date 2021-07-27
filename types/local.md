@@ -9,3 +9,7 @@ No operations are necessary; just encode as raw bytes.
     k[version].local.[data]
 
 Where `[data]` is the base64url-encoded raw bytes of the symmetric key.
+
+### ID Serialization
+
+See [lid](lid.md).

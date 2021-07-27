@@ -1,13 +1,13 @@
-# PASERK Type: pid
+# PASERK Type: sid
 
 This kind of PASERK serves as a pointer to another PASERK, which is in
 turn intended for `public` PASETOs.
 
-This is for serializing **public keys** in a keypair.
+This is for serializing **secret keys** in a keypair.
 
 ## Format
 
-    k[version].pid.[data]
+    k[version].sid.[data]
 
 ## Calculations
 

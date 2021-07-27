@@ -8,6 +8,10 @@ This PASERK is a key intended for `local` PASETOs, encrypted with a password.
 
 Where `[data]` is the base64url-encoded payload, defined by each version.
 
+### ID Serialization
+
+See [lid](lid.md).
+
 ## Operations
 
 See [PBKW](../operations/PBKW.md) for the algorithm used.

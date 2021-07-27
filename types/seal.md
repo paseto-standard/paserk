@@ -7,6 +7,10 @@ asymmetric wrapping key.
 
     k[version].seal.[data]
 
+### ID Serialization
+
+See [lid](lid.md).
+
 ## Operations
 
 See [PKE](../operations/PKE.md) for the algorithms used to perform

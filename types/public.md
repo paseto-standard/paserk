@@ -6,6 +6,10 @@ This is a plaintext serialization of a public key for PASETO `public` tokens.
 
     k[version].public.[data]
 
+### ID Serialization
+
+See [pid](pid.md).
+
 ## PASERK Versions
 
 ### Version 1

@@ -7,6 +7,10 @@ symmetric wrapping key.
 
     k[version].local-wrap.[prefix].[encrypted key]
 
+### ID Serialization
+
+See [lid](lid.md).
+
 ## Operations
 
 See [PBKW](../operations/Wrap.md) for the wrapping algorithm.

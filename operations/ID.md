@@ -5,7 +5,8 @@ This operation calculates the unique ID for a given PASERK.
 ## Related Types
 
 * [`lid`](../types/lid.md) for `local` tokens
-* [`pid`](../types/pid.md) for `public` tokens
+* [`pid`](../types/pid.md) for `public` tokens (public key)
+* [`sid`](../types/sid.md) for `public` tokens (secret key)
 
 ## PASERK Versions
 
