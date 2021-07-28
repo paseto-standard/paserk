@@ -13,4 +13,4 @@ See [lid](lid.md).
 
 ## Operations
 
-See [PBKW](../operations/Wrap.md) for the wrapping algorithm.
+See [Wrap](../operations/Wrap.md) for the wrapping algorithm.
