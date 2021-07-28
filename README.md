@@ -59,3 +59,7 @@ with its associated PASETO, or included in the footer of a PASETO.
 
 When PASERKs are not included in the footer,  users **SHOULD** include the PASERK 
 ID in the footer (or, in v3/v4 of PASETO, as an implicit assertion).
+
+## PASERK Implementations
+
+* [**PHP** (Reference Implementation)](https://github.com/paragonie/paserk-php)

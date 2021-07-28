@@ -130,7 +130,7 @@ Given a plaintext data key (`pdk`), and a compressed P-384 public key (`pk`).
    The leftmost 256 bits (32 bytes) will be `Ek`.
    The remaining 128 bits (16 bytes) will be `n`.
 4. Calculate the authentication key `Ak` from 
-   `SHA384(0x02 || h || xk || epk || xpk)`.
+   `SHA384(0x02 || h || xk || epk || pk)`.
 5. Encrypt the plaintext data key (`pdk`) as
    `aes256ctr_encrypt(msg = pdk, nonce=n, key=Ek)`.
    This will be the encrypted data key (`edk`).
@@ -145,7 +145,7 @@ auth tag (`t`), and P-384 secret key (`sk`).
 
 1. Calculate the shared secret `xk` from `ecdh_p384(sk, epk)`.
 2. Calculate the authentication key `Ak` from
-   `SHA384(0x02 || h || xk || epk || xpk)`.
+   `SHA384(0x02 || h || xk || epk || pk)`.
 3. Recalculate the auth tag `t2` as
    `hmac_sha384(msg = h || epk || edk, key=Ak)`.
 4. Compare `t2` with `t`, using a constant-time compare function.
