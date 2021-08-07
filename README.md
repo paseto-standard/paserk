@@ -64,7 +64,7 @@ encoded key is also wrapped with additional layers of cryptography. The wrapping
 
 All other types **MUST NOT** be included in a PASETO footer.
 
-#### Examples of Valid PASERKs in a PASETO Footer
+## Examples of Valid PASERKs in a PASETO Footer
 
 ```json
 {"kid":"k4.lid.iVtYQDjr5gEijCSjJC3fQaJm7nCeQSeaty0Jixy8dbsk"}
@@ -98,7 +98,7 @@ Wrapped keys are encrypted. As long as the wrapping key is confidential, this is
 Sealed keys are wrapped using public-key encryption. As long as the unwrapping key (asymmetric
 secret key) is confidential, this is safe.
 
-#### Examples of Invalid PASERKs in a PASETO Footer
+## Examples of Invalid PASERKs in a PASETO Footer
 
 ```json
 {"kid":"k4.local.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8"}
