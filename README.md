@@ -54,13 +54,14 @@ Cross-version support is explicitly **NOT** permitted.
 
 Each [**type**](types) is a composition of one or more [**operations**](operations).
 
-As one of the design criteria, it **MUST** be safe for users to store the PASERK ID
-(resulting in `lid`, `sid`, or `pid` types) in the footer (or, in v3/v4 of PASETO, as
-an implicit assertion).
+As one of the design criteria, it **MUST** be safe for users to store the ID PASERK for
+a PASETO key (resulting in `lid`, `sid`, or `pid` types) in the footey
+(or, in v3/v4 of PASETO, as an implicit assertion). These types **SHOULD** be stored
+in the `kid` field in the footer, if the footer is JSON encoded.
 
-Any of these PASERK types **MAY** be stored directly in the PASETO footer, because the
-encoded key is also wrapped with additional layers of cryptography. The wrapping key
-**MUST NOT** be disclosed: `local-wrap`, `seal`, `secret-wrap`.
+Any of these PASERK types **MAY** be stored in the PASETO footer (in the `wpk` claim),
+because the encoded key is also wrapped with additional layers of cryptography:
+`local-wrap`, `seal`, `secret-wrap`. The wrapping key **MUST NOT** be disclosed.
 
 All other types **MUST NOT** be included in a PASETO footer.
 
@@ -81,10 +82,10 @@ The PASERK key ID is always okay to include in a PASETO footer.
 -----
 
 ```json
-{"kid":"k4.local-wrap.pie.pu-fBxwoXrICYjeumh77cJ6la4svNGrjshQ7W_ygiJzm80LQBB1e6yqODDq6HO8c0UNY_dzLkzZC62Z81eleoIYUChwymEx23KbTQDinWaOQoKkRantNkrD5o0eo8iCS"}
+{"wpk":"k4.local-wrap.pie.pu-fBxwoXrICYjeumh77cJ6la4svNGrjshQ7W_ygiJzm80LQBB1e6yqODDq6HO8c0UNY_dzLkzZC62Z81eleoIYUChwymEx23KbTQDinWaOQoKkRantNkrD5o0eo8iCS"}
 ```
 ```json
-{"kid":"k4.k4.secret-wrap.pie.jLhVAJYWaOcKiFvnKv6kFEQxSGV9BQuW1Qt4jRwr6yHiNeQf2h1GQ0czBJZpveX5T0R0YZv2OEenf8uyLqwamDJUbtS-GdYp_TXT1OJCwGJb2UpEHvcSOciH2PVCEiTrLM9n_mAI4SWXDfw4xYenmINDhi8EiPaPKvsOU64YBvY"}
+{"wpk":"k4.secret-wrap.pie.jLhVAJYWaOcKiFvnKv6kFEQxSGV9BQuW1Qt4jRwr6yHiNeQf2h1GQ0czBJZpveX5T0R0YZv2OEenf8uyLqwamDJUbtS-GdYp_TXT1OJCwGJb2UpEHvcSOciH2PVCEiTrLM9n_mAI4SWXDfw4xYenmINDhi8EiPaPKvsOU64YBvY"}
 ```
 
 Wrapped keys are encrypted. As long as the wrapping key is confidential, this is safe.
@@ -92,7 +93,7 @@ Wrapped keys are encrypted. As long as the wrapping key is confidential, this is
 -----
 
 ```json
-{"kid":"k4.seal.3-VOL4pX5b7eV3uMhYHfOhJNN77YyYtd7wYXrH9rRucKNmq0aO-6AWIFU4xOXUCBk0mzBZeWAPAKrvejqixqeRXm-MQXt8yFGHmM1RzpdJw80nabbyDIsNCpBwltU-uj"}
+{"wpk":"k4.seal.3-VOL4pX5b7eV3uMhYHfOhJNN77YyYtd7wYXrH9rRucKNmq0aO-6AWIFU4xOXUCBk0mzBZeWAPAKrvejqixqeRXm-MQXt8yFGHmM1RzpdJw80nabbyDIsNCpBwltU-uj"}
 ```
 
 Sealed keys are wrapped using public-key encryption. As long as the unwrapping key (asymmetric
@@ -101,21 +102,21 @@ secret key) is confidential, this is safe.
 ## Examples of Invalid PASERKs in a PASETO Footer
 
 ```json
-{"kid":"k4.local.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8"}
+{"wpk":"k4.local.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8"}
 ```
 
 This is a `local` type, and it is forbidden. Critically, it would disclose a symmetric
 key if included in an unencrypted PASETO footer.
 
 ```json
-{"kid":"k3.secret.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo-QkZKTlJWWl5iZmpucnZ6f"}
+{"wpk":"k3.secret.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo-QkZKTlJWWl5iZmpucnZ6f"}
 ```
 
 This is a `secret` type, and it is forbidden. Critically, it would disclose an asymmetric
 secret key if included in an unencrypted PASETO footer.
 
 ```json
-{"kid":"k3.public.AnBxcnN0dXZ3eHl6e3x9fn-AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2enw"}
+{"wpk":"k3.public.AnBxcnN0dXZ3eHl6e3x9fn-AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2enw"}
 ```
 
 This is [forbidden by the PASETO specification](https://github.com/paseto-standard/paseto-spec/blob/master/docs/02-Implementation-Guide/01-Payload-Processing.md#key-id-support):
@@ -144,10 +145,10 @@ the security token. Therefore, this use case **MUST NOT** ever be permitted.
 -----
 
 ```json
-{"kid":"k4.local-pw._bru5tnkPSFXOtKhBTmW4gAAAAAEAAAAAAAAAgAAAAGKI3PyFS2vyQ9o5qowCR_GUXskLmdV1bjjc3vqnbwN7hVG1lAUCGjElTGIoH-K6lnkHnP4uaFBKWEtB3xFEGzAjzBSnl_JBmwLYK5jstjAV6LnJm_NOt0j"}
+{"wpk":"k4.local-pw._bru5tnkPSFXOtKhBTmW4gAAAAAEAAAAAAAAAgAAAAGKI3PyFS2vyQ9o5qowCR_GUXskLmdV1bjjc3vqnbwN7hVG1lAUCGjElTGIoH-K6lnkHnP4uaFBKWEtB3xFEGzAjzBSnl_JBmwLYK5jstjAV6LnJm_NOt0j"}
 ```
 ```json
-{"kid":"k4.secret-pw.dkyi7kfzHnVTCqTq1AvLyQAAAAAQAAAAAAAAAwAAAAFWNLgB_yXNkk4W9NiXgeTkNnB3Vjuk_-TFQ-vMUxNX-Ha3k42djov9rHVykMHkrSGUemYFwpot9uNHnXOWtJCVIwdYAwZmt_uRSJ2rRTElanT6mWXojuBUy2k1lxD-iZ10pVPkJ-Kvv_SLEhLQ8RS7wqFW8RfFGyw"}
+{"wpk":"k4.secret-pw.dkyi7kfzHnVTCqTq1AvLyQAAAAAQAAAAAAAAAwAAAAFWNLgB_yXNkk4W9NiXgeTkNnB3Vjuk_-TFQ-vMUxNX-Ha3k42djov9rHVykMHkrSGUemYFwpot9uNHnXOWtJCVIwdYAwZmt_uRSJ2rRTElanT6mWXojuBUy2k1lxD-iZ10pVPkJ-Kvv_SLEhLQ8RS7wqFW8RfFGyw"}
 ```
 
 Password-based key-wrapping is provided in PASERK for systems that need
