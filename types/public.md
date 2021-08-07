@@ -34,3 +34,21 @@ if Y is odd:
 ```
 
 Here, the X coordinate is expressed in big endian byte order.
+
+## Examples
+
+```
+k1.public.MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyaTgTt53ph3p5GHgwoGWwz5hRfWXSQA08NCOwe0FEgALWos9GCjNFCd723nCHxBtN1qd74MSh_uN88JPIbwxKheDp4kxo4YMN5trPaF0e9G6Bj1N02HnanxFLW-gmLbgYO_SZYfWF_M8yLBcu5Y1Ot0ZxDDDXS9wIQTtBE0ne3YbxgZJAZTU5XqyQ1DxdzYyC5lF6yBaR5UQtCYTnXAApVRuUI2Sd6L1E2vl9bSBumZ5IpNxkRnAwIMjeTJB_0AIELh0mE5vwdihOCbdV6alUyhKC1-1w_FW6HWcp_JG1kKC8DPIidZ78Bbqv9YFzkAbNni5eSBOsXVBKG78Zsc8owIDAQAB
+``` 
+
+```
+k2.public.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8
+```
+
+```
+k3.public.AnBxcnN0dXZ3eHl6e3x9fn-AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2enw
+```
+
+```
+k4.public.cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8
+```
