@@ -29,7 +29,20 @@ Given a plaintext data key (`pdk`) and RSA public key (`pk`) (which **MUST** hav
 a modulus `n` larger than 2^4095 and smaller than 2^4096 + 1 and a public exponent
 `e` equal to 65537).
 
-1. Generate a random number `r` between 0 and the modulus of the public key (`pk`).
+1. Generate a random number `r` between 0 and the modulus (`n`) of the public key (`pk`).
+   * We recommend generating a string of random bytes, then clearing the leftmost
+     bit of the first byte, and setting the subsequent bit.
+     ```
+     r = random_bytes(512) // 512 bytes = 4096 bits
+     r[0] &= 0x7f   # Clear the first bit
+     r[0] |= 0x40   # Set the second bit
+     ```
+     This yields a random value with 4094 bits of uncertainty, and ensures that r^e (mod n)
+     wraps the modulus.
+     
+     This is a very fast way to generate a large random number between 0 and n-1,
+     without side-channel leakage from big integer comparison, but it does have two
+     fixed bits in the message.
 2. RSA-encrypt `r` with the `pk`, with no padding mode, to get the RSA ciphertext `c`.
 3. Calculate (`Ek`, `n`) as `HMAC-SHA-384(msg = 0x01 || h || r, key = SHA384(c))`.
    The leftmost 256 bits will be the encryption key (`Ek`). The remaining 128 bits
