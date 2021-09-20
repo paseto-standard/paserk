@@ -104,7 +104,7 @@ Given a base64url-encoded encrypted key `b`, and the wrapping key `wk`:
    Ek = x[0:32]
    n2 = x[32:]
    ```
-6. Encrypt the wrapped key `c` with `Ek` and `n2` to obtain the
+6. Decrypt the wrapped key `c` with `Ek` and `n2` to obtain the
    plaintext key `ptk`:  
    `ptk = XChaCha20(msg = c, key = Ek, nonce = n2)`
-7. Return `c`.
+7. Return `ptk`.
