@@ -19,6 +19,9 @@ The `[data]` portion will be DER ASN.1 PKCS#1 RSA Private Key,
 
 The `[data]` portion will be the Ed25519 secret key as raw bytes.
 
+Here, Ed25519 secret key means the clamped 32-byte seed followed by the 32-byte public key,
+as used in the NaCl and libsodium APIs, rather than just the clamped 32-byte seed.
+
 ### Version 3
 
 The `[data]` portion will be the P-384 secret key as raw bytes.
