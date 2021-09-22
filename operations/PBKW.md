@@ -51,7 +51,7 @@ encrypted data key (`edk`), and authentication tag `t`:
    `k = PBKDF2-SHA384(pw, s, i)`
 2. Derive the authentication key (`Ak`) from `SHA-384(0xFE || k)`.
 3. Recalculate the authentication tag `t2` over
-   `h`, `s`, `mem`, `time`, `para`, `n`, and `edk`.
+   `h`, `s`, `i`, `n`, and `edk`.
    ```
    t2 = HMAC-SHA-384(
        msg = h || s || int2bytes(i) || n || edk,
