@@ -18,7 +18,7 @@ asymmetric encryption.
 
 When serializing, `[data]` will be the base64url-encoded payload consisting
 of the return values of the appropriate Encryption operation from the
-[PKE](../operaitons/PKE.md) document, for this PASERK version.
+[PKE](../operations/PKE.md) document, for this PASERK version.
 These values will be concatenated together in the order the PKE document specifies
 prior to base64url encoding.
 
