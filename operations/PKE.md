@@ -114,7 +114,7 @@ auth tag (`t`), and Ed25519 secret key (`sk`).
 1. Calculate the birationally equivalent X25519 secret key (`xsk`) from `sk`.
 2. Calculate the shared secret `xk` from `crypto_scalarmult(xsk, epk)`.
 3. Calculate the authentication key `Ak` from
-   `BLAKE2b(0x02 || h || xk || epk || xpk)`.
+   `BLAKE2b(0x02 || h || xk || epk || pk)`.
 4. Recalculate the auth tag `t2` as `BLAKE2b(msg = h || epk || edk, key=Ak)`.
 5. Compare `t2` with `t`, using a constant-time compare function. If it does not
    match, abort.
@@ -159,12 +159,13 @@ auth tag (`t`), and P-384 secret key (`sk`).
 1. Calculate the shared secret `xk` from `ecdh_p384(sk, epk)`.
 2. Calculate the authentication key `Ak` from
    `SHA384(0x02 || h || xk || epk || pk)`.
+   `pk` is the public key of `sk`.
 3. Recalculate the auth tag `t2` as
    `hmac_sha384(msg = h || epk || edk, key=Ak)`.
 4. Compare `t2` with `t`, using a constant-time compare function.
    If it does not match, abort.
 5. Calculate the encryption key `Ek` and nonce `n` from
-   `SHA384(0x01 || h || xk || epk || xpk)`.
+   `SHA384(0x01 || h || xk || epk || pk)`.
    The leftmost 256 bits (32 bytes) will be `Ek`.
    The remaining 128 bits (16 bytes) will be `n`.
 6. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using AES-256-CTR.
