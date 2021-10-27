@@ -32,7 +32,7 @@ Before returning the decrypted plaintext key, the following checks **MUST** be p
 |---|---|
 | Version 1 | At least 1600 bytes. |
 | Version 2 | 64 bytes |
-| Version 3 | At least 280 bytes. |
+| Version 3 | 48 bytes |
 | Version 4 | 64 bytes |
 
 ## PASERK Versions
