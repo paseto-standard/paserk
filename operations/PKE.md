@@ -115,14 +115,15 @@ auth tag (`t`), and Ed25519 secret key (`sk`).
 
 1. Verify that the header `h` is correct for the version of `sk`, and that `sk`
    is an Ed25519 secret key.
-2. Calculate the birationally equivalent X25519 secret key (`xsk`) from `sk`.
+2. Calculate the birationally-equivalent X25519 secret key (`xsk`) from `sk`.
+   The public key (`pk`) can be derived from either `xsk` or `sk`.
 3. Calculate the shared secret `xk` from `crypto_scalarmult(xsk, epk)`.
 4. Calculate the authentication key `Ak` from
-   `BLAKE2b(0x02 || h || xk || epk || xpk)`.
+   `BLAKE2b(0x02 || h || xk || epk || pk)`.
 5. Recalculate the auth tag `t2` as `BLAKE2b(msg = h || epk || edk, key=Ak)`.
 6. Compare `t2` with `t`, using a constant-time compare function. If it does not
    match, abort.
-7. Calculate the encryption key `Ek` from `BLAKE2b(0x01 || h || xk || epk || xpk)`.
+7. Calculate the encryption key `Ek` from `BLAKE2b(0x01 || h || xk || epk || pk)`.
 8. Calculate the nonce `n` from `BLAKE2b-192(epk || xpk)`.
 9. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using XChaCha20.
    This will result in the plaintext data key (`pdk`).
@@ -143,7 +144,7 @@ Given a plaintext data key (`pdk`), and a compressed P-384 public key (`pk`).
 1. Generate a random, ephemeral P-384 keypair (`esk`, `epk`).
 2. Calculate the shared secret `xk` from `ecdh_p384(esk, pk)`.
 3. Calculate the encryption key `Ek` and nonce `n` from 
-   `SHA384(0x01 || h || xk || epk || xpk)`.
+   `SHA384(0x01 || h || xk || epk || pk)`.
    The leftmost 256 bits (32 bytes) will be `Ek`.
    The remaining 128 bits (16 bytes) will be `n`.
 4. Calculate the authentication key `Ak` from 
@@ -160,6 +161,8 @@ Given a plaintext data key (`pdk`), and a compressed P-384 public key (`pk`).
 Given a sender's ephemeral public key (`epk`), encrypted data key (`edk`),
 auth tag (`t`), and P-384 secret key (`sk`).
 
+The public key (`pk`) will be a compressed public key calculate from `sk`.
+
 1. Verify that the header `h`  is equal to `k3.seal.`, and that `sk`
    is an ECDSA secret key.
 2. Calculate the shared secret `xk` from `ecdh_p384(sk, epk)`.
@@ -170,7 +173,7 @@ auth tag (`t`), and P-384 secret key (`sk`).
 5. Compare `t2` with `t`, using a constant-time compare function.
    If it does not match, abort.
 6. Calculate the encryption key `Ek` and nonce `n` from
-   `SHA384(0x01 || h || xk || epk || xpk)`.
+   `SHA384(0x01 || h || xk || epk || pk)`.
    The leftmost 256 bits (32 bytes) will be `Ek`.
    The remaining 128 bits (16 bytes) will be `n`.
 7. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using AES-256-CTR.
