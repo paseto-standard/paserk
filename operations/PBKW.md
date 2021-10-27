@@ -47,10 +47,11 @@ count (`i`, defaults to 100,000):
 Given a password (`pw`), salt (`s`), iteration count (`i`), nonce (`n`),
 encrypted data key (`edk`), and authentication tag `t`:
 
-1. Derive the pre-key `k` from the password and salt.
+1. Assert that the header `h` is correct for the expected version of the wrapped key.
+2. Derive the pre-key `k` from the password and salt.
    `k = PBKDF2-SHA384(pw, s, i)`
-2. Derive the authentication key (`Ak`) from `SHA-384(0xFE || k)`.
-3. Recalculate the authentication tag `t2` over
+3. Derive the authentication key (`Ak`) from `SHA-384(0xFE || k)`.
+4. Recalculate the authentication tag `t2` over
    `h`, `s`, `i`, `n`, and `edk`.
    ```
    t2 = HMAC-SHA-384(
@@ -58,13 +59,13 @@ encrypted data key (`edk`), and authentication tag `t`:
        key = Ak
    )
    ```
-4. Compare `t` with `t2` using a constant-time string comparison function.
+5. Compare `t` with `t2` using a constant-time string comparison function.
    If it fails, abort.
-5. Derive the encryption key (`Ek`) from `SHA-384(0xFF || k)`.
-6. Decrypt the encrypted key (`edk`) with `Ek` and `n` to obtain the
+6. Derive the encryption key (`Ek`) from `SHA-384(0xFF || k)`.
+7. Decrypt the encrypted key (`edk`) with `Ek` and `n` to obtain the
    plaintext key `ptk`.
    `ptk = AES-256-CTR(msg=edk, key=Ek, nonce=n)`
-7. Return `ptk`
+8. Return `ptk`
 
 
 ### Versions 2 and 4
@@ -105,10 +106,11 @@ Given a password (`pw`), salt (`s`), memory cost (`mem`),
 time cost (`time`), parallelism degree (`para`), nonce (`n`),
 encrypted data key (`edk`), and authentication tag `t`:
 
-1. Derive the pre-key `k` from the password and salt.
+1. Assert that the header `h` is correct for the expected version of the wrapped key.
+2. Derive the pre-key `k` from the password and salt.
    `k = Argon2id(pw, s, mem, time, para)`
-2. Derive the authentication key (`Ak`) from `crypto_generichash(0xFE || k)`.
-3. Recalculate the authentication tag `t2` over
+3. Derive the authentication key (`Ak`) from `crypto_generichash(0xFE || k)`.
+4. Recalculate the authentication tag `t2` over
    `h`, `s`, `mem`, `time`, `para`, `n`, and `edk`.
    ```
    t2 = crypto_generichash(
@@ -116,10 +118,10 @@ encrypted data key (`edk`), and authentication tag `t`:
        key = Ak
    )
    ```
-4. Compare `t` with `t2` using a constant-time string comparison function.
+5. Compare `t` with `t2` using a constant-time string comparison function.
    If it fails, abort.
-5. Derive the encryption key (`Ek`) from `crypto_generichash(0xFF || k)`.
-6. Decrypt the encrypted key (`edk`) with `Ek` and `n` to obtain the
+6. Derive the encryption key (`Ek`) from `crypto_generichash(0xFF || k)`.
+7. Decrypt the encrypted key (`edk`) with `Ek` and `n` to obtain the
    plaintext key `ptk`.
    `ptk = XChaCha20(msg=edk, key=Ek, nonce=n)`
-7. Return `ptk`.
+8. Return `ptk`.
