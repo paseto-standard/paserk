@@ -55,7 +55,7 @@ Cross-version support is explicitly **NOT** permitted.
 Each [**type**](types) is a composition of one or more [**operations**](operations).
 
 As one of the design criteria, it **MUST** be safe for users to store the ID PASERK for
-a PASETO key (resulting in `lid`, `sid`, or `pid` types) in the footey
+a PASETO key (resulting in `lid`, `sid`, or `pid` types) in the footer
 (or, in v3/v4 of PASETO, as an implicit assertion). These types **SHOULD** be stored
 in the `kid` field in the footer, if the footer is JSON encoded.
 
@@ -153,7 +153,7 @@ the security token. Therefore, this use case **MUST NOT** ever be permitted.
 
 Password-based key-wrapping is provided in PASERK for systems that need
 password-protected cryptographic secrets, but password-protected keys **MUST NOT**
-be included in a PASETO header.
+be included in a PASETO footer.
 
 ## PASERK Implementations
 
