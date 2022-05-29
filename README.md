@@ -40,13 +40,13 @@ payload data, and `[type]` is one of the items in the following table:
 | [`local`](types/local.md)             | Symmetric key for `local` tokens.                                           | `local`              | Yes               | **No**          |
 | [`seal`](types/seal.md)               | Symmetric key wrapped using asymmetric encryption.                          | `local`              | Yes               | Yes             |
 | [`local-wrap`](types/local-wrap.md)   | Symmetric key wrapped by another symmetric key.                             | `local`              | No                | Yes             |
-| [`local-pw`](types/local-pw.md)       | Symmetric key wrapped using password-based encryption.                      | `local`              | Yes               | Yes             |
+| [`local-pw`](types/local-pw.md)       | Symmetric key wrapped using password-based encryption.                      | `local`              | Yes               | **No**          |
 | [`sid`](types/sid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs. (Secret Key)  | `public`             | Yes               | Yes             |
 | [`public`](types/public.md)           | Public key for verifying `public` tokens.                                   | `public`             | Yes               | **No**          |
 | [`pid`](types/pid.md)                 | Unique Identifier for a separate PASERK for `public` PASETOs. (Public Key)  | `public`             | Yes               | Yes             |
 | [`secret`](types/secret.md)           | Secret key for signing `public` tokens.                                     | `public`             | Yes               | **No**          |
 | [`secret-wrap`](types/secret-wrap.md) | Asymmetric secret key wrapped by another symmetric key.                     | `public`             | No                | Yes             |
-| [`secret-pw`](types/secret-pw.md)     | Asymmetric secret key wrapped using password-based encryption.              | `public`             | Yes               | Yes             |
+| [`secret-pw`](types/secret-pw.md)     | Asymmetric secret key wrapped using password-based encryption.              | `public`             | Yes               | **No**          |
 
 The version of a PASERK **MUST** match the version of the PASETO it's used with.
 For example, a `k2.local.` PASERK must be used with `v2.local.` tokens.
@@ -55,7 +55,7 @@ Cross-version support is explicitly **NOT** permitted.
 Each [**type**](types) is a composition of one or more [**operations**](operations).
 
 As one of the design criteria, it **MUST** be safe for users to store the ID PASERK for
-a PASETO key (resulting in `lid`, `sid`, or `pid` types) in the footey
+a PASETO key (resulting in `lid`, `sid`, or `pid` types) in the footer
 (or, in v3/v4 of PASETO, as an implicit assertion). These types **SHOULD** be stored
 in the `kid` field in the footer, if the footer is JSON encoded.
 
@@ -153,7 +153,7 @@ the security token. Therefore, this use case **MUST NOT** ever be permitted.
 
 Password-based key-wrapping is provided in PASERK for systems that need
 password-protected cryptographic secrets, but password-protected keys **MUST NOT**
-be included in a PASETO header.
+be included in a PASETO footer.
 
 ## PASERK Implementations
 

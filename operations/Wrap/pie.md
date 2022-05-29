@@ -14,7 +14,7 @@ Before performing any key-wrapping, the following checks **MUST** be performed.
 2. If the operation is `local-wrap`, an asymmetric key **MUST NOT** be provided,
    and a symmetric key **MUST** be provided.
 3. If the operation is `secret-wrap`, an asymmetric key **MUST** be provided, 
-   and an asymmetric key **MUST NOT** be provided.
+   and a symmetric key **MUST NOT** be provided.
 
 ### Decryption (Key Unwrapping)
 
@@ -24,7 +24,7 @@ Before returning the decrypted plaintext key, the following checks **MUST** be p
    and a symmetric key **MUST** be provided.
    * Additionally, the decrypted plaintext key **MUST** be only 32 bytes long.
 2. If the operation is `secret-wrap`, an asymmetric key **MUST** be provided,
-   and an asymmetric key **MUST NOT** be provided.
+   and a symmetric key **MUST NOT** be provided.
    * Additionally, the decrypted plaintext key **MUST** be the appropriate size for
      the secret key of a given version. (See table below.)
 
