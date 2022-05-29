@@ -112,12 +112,14 @@ Given a plaintext key `ptk` and wrapping key `wk`:
    n2 = x[32:]
    ```
 4. Derive the authentication key `Ak` as:
-   `Ak = crypto_generichash(msg = 0x81 || n, key = wk)`
+   `Ak = crypto_generichash(msg = 0x81 || n, key = wk, length = 32)`
+   (This will return a 256-bit (32-byte) output.)
 5. Encrypt the plaintext key `ptk` with `Ek` and `n2` to obtain the
    wrapped key `c`:  
    `c = XChaCha20(msg = ptk, key = Ek, nonce = n2)`
 6. Calculate the authentication tag `t` as:
-   `t = crypto_generichash(msg = h || n || c, key = Ak)`
+   `t = crypto_generichash(msg = h || n || c, key = Ak, length = 32)`
+   (This will return a 256-bit (32-byte) output.)
 7. Return `base64url(t || n || c)`.
 
 #### V2/V4 Decryption
@@ -128,9 +130,11 @@ Given a base64url-encoded encrypted key `b`, and the wrapping key `wk`:
    be the authentication tag `t`. The next 32 bytes will be the nonce `n`.
    The remaining bytes will be the wrapped key, `c`.
 2. Derive the authentication key `Ak` as:
-   `Ak = crypto_generichash(msg = 0x81 || n, key = wk)`
+   `Ak = crypto_generichash(msg = 0x81 || n, key = wk, length = 32)`
+   (This will return a 256-bit (32-byte) output.)
 3. Recalculate the authentication tag `t2` as:
-   `t2 = crypto_generichash(msg = h || n || c, key = Ak)`
+   `t2 = crypto_generichash(msg = h || n || c, key = Ak, length = 32)`
+   (This will return a 256-bit (32-byte) output.)
 4. Compare `t` with `t2` in constant-time. If it doesn't match, abort.
 5. Derive the encryption key `Ek` and XChaCha nonce `n2` as:
    ```

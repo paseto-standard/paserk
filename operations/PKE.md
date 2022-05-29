@@ -87,6 +87,9 @@ For version 4, the constant `h` in the algorithms below will be set to `k4.seal.
 (with the trailing period), and the unwrapped key MUST only be used for
 `v4.local.` PASETOs.
 
+Note: `BLAKE2b-256` means BLAKE2b with a 256-bit output, while `BLAKE2b-192` is
+BLAKE2b with a 192-bit output.
+
 #### V2/V4 Encryption
 
 Given a plaintext data key (`pdk`), and an Ed25519 public key (`pk`).
@@ -96,16 +99,16 @@ Given a plaintext data key (`pdk`), and an Ed25519 public key (`pk`).
 3. Calculate the shared secret `xk` from 
    `crypto_scalarmult(esk, xpk)`.
 4. Calculate the encryption key `Ek` from
-   `BLAKE2b(0x01 || h || xk || epk || xpk)`.
+   `BLAKE2b-256(0x01 || h || xk || epk || xpk)`.
 5. Calculate the authentication key `Ak` from 
-   `BLAKE2b(0x02 || h || xk || epk || xpk)`.
+   `BLAKE2b-256(0x02 || h || xk || epk || xpk)`.
 6. Calculate the nonce `n` from 
    `BLAKE2b-192(epk || xpk)`.
 7. Encrypt the plaintext data key (`pdk`) as 
    `XChaCha20(msg = pdk, nonce=n, key=Ek)`.
    This will be the encrypted data key (`edk`).
 8. Calculate the auth tag `t` as
-   `BLAKE2b(msg = h || epk || edk, key=Ak)`.
+   `BLAKE2b-256(msg = h || epk || edk, key=Ak)`.
 9. Return `t`, `epk`, and `edk`.
 
 #### V2/V4 Decryption
@@ -119,11 +122,11 @@ auth tag (`t`), and Ed25519 secret key (`sk`).
    The public key (`pk`) can be derived from either `xsk` or `sk`.
 3. Calculate the shared secret `xk` from `crypto_scalarmult(xsk, epk)`.
 4. Calculate the authentication key `Ak` from
-   `BLAKE2b(0x02 || h || xk || epk || pk)`.
-5. Recalculate the auth tag `t2` as `BLAKE2b(msg = h || epk || edk, key=Ak)`.
+   `BLAKE2b-256(0x02 || h || xk || epk || pk)`.
+5. Recalculate the auth tag `t2` as `BLAKE2b-256(msg = h || epk || edk, key=Ak)`.
 6. Compare `t2` with `t`, using a constant-time compare function. If it does not
    match, abort.
-7. Calculate the encryption key `Ek` from `BLAKE2b(0x01 || h || xk || epk || pk)`.
+7. Calculate the encryption key `Ek` from `BLAKE2b-256(0x01 || h || xk || epk || pk)`.
 8. Calculate the nonce `n` from `BLAKE2b-192(epk || xpk)`.
 9. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using XChaCha20.
    This will result in the plaintext data key (`pdk`).

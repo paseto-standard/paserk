@@ -95,7 +95,8 @@ time cost (`time`), and parallelism degree (`para`):
    ```
    t = crypto_generichash(
        msg = h || s || long2bytes(mem) || int2bytes(time) || int2bytes(para) || n || edk,
-       key = Ak
+       key = Ak,
+       length = 32 # 32 bytes, 256 bits
    )
    ```
 8. Return `h`, `s`, `mem`, `time`, `para`, `n`, `edk`, `t`.
@@ -115,7 +116,8 @@ encrypted data key (`edk`), and authentication tag `t`:
    ```
    t2 = crypto_generichash(
        msg = h || s || long2bytes(mem) || int2bytes(time) || int2bytes(para) || n || edk,
-       key = Ak
+       key = Ak,
+       length = 32 # 32 bytes, 256 bits
    )
    ```
 5. Compare `t` with `t2` using a constant-time string comparison function.
