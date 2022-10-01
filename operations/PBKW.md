@@ -8,6 +8,17 @@ the key.
 * [`local-pw`](../types/local-pw.md) for `local` tokens
 * [`secret-pw`](../types/secret-pw.md) for `public` tokens
 
+## Definitions
+
+**crypto_generichash()** is BLAKE2b with a variable-length output that defaults
+to 256 bits (32 bytes), as implemented in [libsodium](https://libsodium.gitbook.io/doc/hashing/generic_hashing).
+
+**long2bytes()** converts a 64-bit unsigned integer into a sequence of 8 octets
+(big-endian byte order).
+
+**int2bytes()** converts a 32-bit unsigned integer into a sequence of 4 octets
+(big-endian byte order).
+
 ## PASERK Versions
 
 ### Versions 1 and 3
@@ -24,9 +35,10 @@ Given a plaintext key (`ptk`), password (`pw`), and iteration
 count (`i`, defaults to 100,000):
 
 1. Generate a random 256-bit (32 byte) salt (`s`).
-2. Derive the pre-key `k` from the password and salt.
+2. Derive the 256-bit (32 byte) pre-key `k` from the password and salt.
    `k = PBKDF2-SHA384(pw, s, i)`
-3. Derive the encryption key (`Ek`) from `SHA-384(0xFF || k)`.
+3. Derive the encryption key (`Ek`) from `SHA-384(0xFF || k)`, truncated to
+   the 32 most significant bytes (`Ek = hash[0:31]`).
 4. Derive the authentication key (`Ak`) from `SHA-384(0xFE || k)`.
 5. Generate a random 128-bit nonce (`n`).
 6. Encrypt the plaintext key `ptk` with `Ek` and `n` to obtain the 
@@ -82,7 +94,7 @@ Given a plaintext key (`ptk`), password (`pw`), memory cost (`mem`),
 time cost (`time`), and parallelism degree (`para`):
 
 1. Generate a random 128-bit (16 byte) salt (`s`).
-2. Derive the pre-key `k` from the password and salt.
+2. Derive the 256-bit (32 byte) pre-key `k` from the password and salt.
    `k = Argon2id(pw, s, mem, time, para)`
 3. Derive the encryption key (`Ek`) from `crypto_generichash(0xFF || k)`.
 4. Derive the authentication key (`Ak`) from `crypto_generichash(0xFE || k)`.
