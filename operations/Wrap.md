@@ -42,6 +42,7 @@ from [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648)).
 
 ### Registered Prefixes
 
-| Prefix | Key-Wrapping Protocol                            | Owner                                                   |
-|--------|--------------------------------------------------|---------------------------------------------------------|
-| `pie`  | [PASERK standard wrapping protocol](Wrap/pie.md) | [Paragon Initiative Enterprises](https://paragonie.com) |
+| Prefix    | Key-Wrapping Protocol                            | Owner                                                   |
+|-----------|--------------------------------------------------|---------------------------------------------------------|
+| `aws-kms` | [AWS Key Management Service](Wrap/aws-kms.md)    | [Amazon Web Services](https://aws.amazon.com)           |
+| `pie`     | [PASERK standard wrapping protocol](Wrap/pie.md) | [Paragon Initiative Enterprises](https://paragonie.com) |
