@@ -194,3 +194,101 @@ if Y is even:
 if Y is odd:
     [0x03] || [X]
 ```
+
+### Version 5
+
+Algorithms: X-Wing (ML-KEM-768 + X25519), SHA-384, AES-256-CTR, HMAC-SHA-384
+
+The constant `h` in the algorithms below will be set to `k5.seal.`
+(with the trailing period), and the unwrapped key MUST only be used for
+`v5.local.` PASETOs.
+
+#### V5 Encryption
+
+Given a plaintext data key (`pdk`), and an X-Wing public key (`pk`).
+
+1. Calculate the shared key and X-Wing ciphertext `xk` and `xc` from `xwing_encaps(pk)`.
+2. Calculate the encryption key `Ek` and nonce `n` from
+   `SHA384(0x01 || h || xk || xc || pk)`.
+   The leftmost 256 bits (32 bytes) will be `Ek`.
+   The remaining 128 bits (16 bytes) will be `n`.
+3. Calculate the authentication key `Ak` from
+   `SHA384(0x02 || h || xk || xc || pk)`.
+4. Encrypt the plaintext data key (`pdk`) as
+   `aes256ctr_encrypt(msg = pdk, nonce=n, key=Ek)`.
+   This will be the encrypted data key (`edk`).
+5. Calculate the auth tag `t` as
+   `hmac_sha384(msg = h || epk || edk, key=Ak)`.
+6. Return `t`, `xc`, and `edk`.
+
+#### V5 Decryption
+
+Given a sender's X-Wing ciphertext (`xc`), encrypted data key (`edk`),
+auth tag (`t`), and X-Wing secret key (`sk`).
+
+The public key (`pk`) will be a compressed public key calculate from `sk`.
+
+1. Verify that the header `h`  is equal to `k5.seal.`, and that `sk`
+   is an X-Wing secret key.
+2. Recover the shared secret `xk` from `xwing_decaps(sk, xc)`.
+3. Calculate the authentication key `Ak` from
+   `SHA384(0x02 || h || xk || xc || pk)`.
+4. Recalculate the auth tag `t2` as
+   `hmac_sha384(msg = h || xc || edk, key=Ak)`.
+5. Compare `t2` with `t`, using a constant-time compare function.
+   If it does not match, abort.
+6. Calculate the encryption key `Ek` and nonce `n` from
+   `SHA384(0x01 || h || xk || xc || pk)`.
+   The leftmost 256 bits (32 bytes) will be `Ek`.
+   The remaining 128 bits (16 bytes) will be `n`.
+7. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using AES-256-CTR.
+   This will result in the plaintext data key (`pdk`).
+8. Return `pdk`.
+
+### Version 6
+
+Algorithms: X-Wing (ML-KEM-768 + X25519), XChaCha20, BLAKE2b
+
+The constant `h` in the algorithms below will be set to `k6.seal.`
+(with the trailing period), and the unwrapped key MUST only be used for
+`v6.local.` PASETOs.
+
+Note: `BLAKE2b-256` means BLAKE2b with a 256-bit output, while `BLAKE2b-192` is
+BLAKE2b with a 192-bit output.
+
+#### V6 Encryption
+
+Given a plaintext data key (`pdk`), and an Ed25519 public key (`pk`).
+
+1. Calculate the shared key and X-Wing ciphertext `xk` and `xc` from `xwing_encaps(pk)`.
+2. Calculate the encryption key `Ek` from
+   `BLAKE2b-256(0x03 || h || xk || xc || pk)`.
+3. Calculate the authentication key `Ak` from
+   `BLAKE2b-256(0x04 || h || xk || xc || pk)`.
+4. Calculate the nonce `n` from
+   `BLAKE2b-192(0xff || xc || pk)`.
+5. Encrypt the plaintext data key (`pdk`) as
+   `XChaCha20(msg = pdk, nonce=n, key=Ek)`.
+   This will be the encrypted data key (`edk`).
+6. Calculate the auth tag `t` as
+   `BLAKE2b-256(msg = h || xc || edk, key=Ak)`.
+7. Return `t`, `epk`, and `edk`.
+
+#### V6 Decryption
+
+Given a sender's X-Wing ciphertext (`xc`), encrypted data key (`edk`),
+auth tag (`t`), and X-Wing secret key (`sk`).
+
+1. Verify that the header `h` is equal to `k6.seal.`, and that `sk`
+   is an X-Wing secret key.
+2. Recover the shared secret `xk` from `xwing_decaps(sk, xc)`.
+3. Calculate the authentication key `Ak` from
+   `BLAKE2b-256(0x04 || h || xk || xc || pk)`.
+4. Recalculate the auth tag `t2` as `BLAKE2b-256(msg = h || epk || edk, key=Ak)`.
+5. Compare `t2` with `t`, using a constant-time compare function. If it does not
+   match, abort.
+6. Calculate the encryption key `Ek` from `BLAKE2b-256(0x03 || h || xk || epk || pk)`.
+7. Calculate the nonce `n` from `BLAKE2b-192(0xff || xc || pk)`.
+8. Decrypt the encrypted data key (`edk`) with `Ek` and `n`, using XChaCha20.
+   This will result in the plaintext data key (`pdk`).
+9. Return `pdk`.

@@ -21,13 +21,14 @@ to 256 bits (32 bytes), as implemented in [libsodium](https://libsodium.gitbook.
 
 ## PASERK Versions
 
-### Versions 1 and 3
+### Versions 1, 3, and 5
 
 Algorithms: PBKDF2, HMAC-SHA384, AES-256-CTR, SHA-384
 
 The header `h` will depend on the exact version and mode being used
 (with a trailing period). It will be one of
-(`k1.local-pw.`, `k1.secret-pw.`, `k3.local-pw.`, `k3.secret-pw.`).
+(`k1.local-pw.`, `k1.secret-pw.`, `k3.local-pw.`, `k3.secret-pw.`,
+`k5.local-pw.`, `k5.secret-pw.`).
 
 #### V1/V3 Encryption
 
@@ -54,7 +55,7 @@ count (`i`, defaults to 100,000):
    ```
 8. Return `h`, `s`, `i`, `n`, `edk`, `t`.
 
-#### V1/V3 Decryption
+#### V1/V3/V5 Decryption
 
 Given a password (`pw`), salt (`s`), iteration count (`i`), nonce (`n`),
 encrypted data key (`edk`), and authentication tag `t`:
@@ -80,15 +81,16 @@ encrypted data key (`edk`), and authentication tag `t`:
 8. Return `ptk`
 
 
-### Versions 2 and 4
+### Versions 2, 4, and 6
 
 Algorithms: Argon2id, BLAKE2b, XChaCha20
 
 The header `h` will depend on the exact version and mode being used
 (with a trailing period). It will be one of 
-(`k2.local-pw.`, `k2.secret-pw.`, `k4.local-pw.`, `k4.secret-pw.`).
+(`k2.local-pw.`, `k2.secret-pw.`, `k4.local-pw.`, `k4.secret-pw.`,
+`k6.local-pw.`, `k6.secret-pw.`).
 
-#### V2/V4 Encryption
+#### V2/V4/V6 Encryption
 
 Given a plaintext key (`ptk`), password (`pw`), memory cost (`mem`),
 time cost (`time`), and parallelism degree (`para`):
@@ -113,7 +115,7 @@ time cost (`time`), and parallelism degree (`para`):
    ```
 8. Return `h`, `s`, `mem`, `time`, `para`, `n`, `edk`, `t`.
 
-#### V2/V4 Decryption
+#### V2/V4/V6 Decryption
 
 Given a password (`pw`), salt (`s`), memory cost (`mem`),
 time cost (`time`), parallelism degree (`para`), nonce (`n`),

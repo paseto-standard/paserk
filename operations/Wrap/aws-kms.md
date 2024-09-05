@@ -26,6 +26,13 @@ Before returning the decrypted plaintext key, the following checks **MUST** be p
     * Additionally, the decrypted plaintext key **MUST** be the appropriate size for
       the secret key of a given version. (See table below.)
 
+| PASERK/PASETO Version | Secret Key Length Constraints                       |
+|-----------------------|-----------------------------------------------------|
+| Version 3             | 48 bytes                                            |
+| Version 4             | 64 bytes                                            |
+| Version 5             | 32 bytes (ML-DSA-44 seed, rather than the full key) |
+| Version 6             | 64 bytes                                            |
+
 ## PASERK Versions
 
 Key wrapping with AWS KMS only supports PASERK Version 3 and 4 and newer, rather than 
@@ -37,8 +44,10 @@ Algorithms: Whatever KMS does under-the-hood. We treat it as a black box.
 
 The header `h` will depend on the exact version and mode being used
 , as well as the prefix `aws-kms` (with a trailing period). It will be one of
-(`k3.local-wrap.aws-kms.`, `k3.secret-wrap.aws-kms.`, `k4.local-wrap.aws-kms.`, 
-`k4.secret-wrap.aws-kms.`).
+(`k3.local-wrap.aws-kms.`, `k3.secret-wrap.aws-kms.`,
+`k4.local-wrap.aws-kms.`, `k4.secret-wrap.aws-kms.`,
+`k5.local-wrap.aws-kms.`, `k5.secret-wrap.aws-kms.`,
+`k6.local-wrap.aws-kms.`, `k6.secret-wrap.aws-kms.`).
 
 #### KMS Encryption
 

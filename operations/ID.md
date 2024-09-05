@@ -10,7 +10,7 @@ This operation calculates the unique ID for a given PASERK.
 
 ## PASERK Versions
 
-### Versions 1 and 3
+### Versions 1, 3, and 5
 
 Set `h` to the version and token type (for example, `k3.lid.` for
 any PASERK intended for `v3.local.` tokens), with a trailing period.
@@ -22,7 +22,7 @@ then truncate to 264 bits (33 bytes, which will encode evenly into a
 
 Return `h || base64url(d)`.
 
-### Versions 2 and 4
+### Versions 2, 4, and 6
 
 Set `h` to the version and token type (for example, `k4.pid.` for
 any PASERK intended for `v4.public.` tokens), with a trailing period.
