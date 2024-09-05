@@ -197,7 +197,7 @@ if Y is odd:
 
 ### Version 5
 
-Algorithms: X-Wing (ML-KEM-768 + X25519), SHA-384, AES-256-CTR, HMAC-SHA-384
+Algorithms: ML-KEM-1024, SHA-384, AES-256-CTR, HMAC-SHA-384
 
 The constant `h` in the algorithms below will be set to `k5.seal.`
 (with the trailing period), and the unwrapped key MUST only be used for
@@ -205,9 +205,10 @@ The constant `h` in the algorithms below will be set to `k5.seal.`
 
 #### V5 Encryption
 
-Given a plaintext data key (`pdk`), and an X-Wing public key (`pk`).
+Given a plaintext data key (`pdk`), and an ML-KEM-1024 public key (`pk`).
 
-1. Calculate the shared key and X-Wing ciphertext `xk` and `xc` from `xwing_encaps(pk)`.
+1. Calculate the shared key and ML-KEM-1024 ciphertext `xk` and `xc` from 
+   `mlkem1024_encaps(pk)`.
 2. Calculate the encryption key `Ek` and nonce `n` from
    `SHA384(0x01 || h || xk || xc || pk)`.
    The leftmost 256 bits (32 bytes) will be `Ek`.
@@ -223,14 +224,14 @@ Given a plaintext data key (`pdk`), and an X-Wing public key (`pk`).
 
 #### V5 Decryption
 
-Given a sender's X-Wing ciphertext (`xc`), encrypted data key (`edk`),
-auth tag (`t`), and X-Wing secret key (`sk`).
+Given a sender's ML-KEM-1024 ciphertext (`xc`), encrypted data key (`edk`),
+auth tag (`t`), and ML-KEM-1024 secret key (`sk`).
 
 The public key (`pk`) will be a compressed public key calculate from `sk`.
 
 1. Verify that the header `h`  is equal to `k5.seal.`, and that `sk`
-   is an X-Wing secret key.
-2. Recover the shared secret `xk` from `xwing_decaps(sk, xc)`.
+   is an ML-KEM-1024 secret key.
+2. Recover the shared secret `xk` from `mlkem1024_decaps(sk, xc)`.
 3. Calculate the authentication key `Ak` from
    `SHA384(0x02 || h || xk || xc || pk)`.
 4. Recalculate the auth tag `t2` as
