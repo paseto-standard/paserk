@@ -28,25 +28,27 @@ Before returning the decrypted plaintext key, the following checks **MUST** be p
    * Additionally, the decrypted plaintext key **MUST** be the appropriate size for
      the secret key of a given version. (See table below.)
 
-| PASERK/PASETO Version | Secret Key Length Constraints |
-|---|---|
-| Version 1 | At least 1600 bytes. |
-| Version 2 | 64 bytes |
-| Version 3 | 48 bytes |
-| Version 4 | 64 bytes |
+| PASERK/PASETO Version | Secret Key Length Constraints                       |
+|-----------------------|-----------------------------------------------------|
+| Version 1             | At least 1600 bytes.                                |
+| Version 2             | 64 bytes                                            |
+| Version 3             | 48 bytes                                            |
+| Version 4             | 64 bytes                                            |
+| Version 5             | 32 bytes (ML-DSA-44 seed, rather than the full key) |
+| Version 6             | 64 bytes                                            |
 
 ## PASERK Versions
 
-### Versions 1 and 3
+### Versions 1, 3, and 5
 
 Algorithms: AES-256-CTR, HMAC-SHA384
 
 The header `h` will depend on the exact version and mode being used
 , as well as the prefix `pie` (with a trailing period). It will be one of
-(`k1.local-wrap.pie.`, `k1.secret-wrap.pie.`, `k3.local-wrap.pie.`, 
-`k3.secret-wrap.pie.`).
+(`k1.local-wrap.pie.`, `k1.secret-wrap.pie.`, `k3.local-wrap.pie.`,
+`k3.secret-wrap.pie.`, `k5.local-wrap.pie.`, `k5.secret-wrap.pie.`).
 
-#### V1/V3 Encryption
+#### V1/V3/V5 Encryption
 
 Given a plaintext key `ptk` and wrapping key `wk`:
 
@@ -90,16 +92,16 @@ Given a base64url-encoded encrypted key `b`, and the wrapping key `wk`:
    `ptk = AES-256-CTR(msg = c, key = Ek, nonce = n2)`
 7. Return `ptk`.
 
-### Version 2 and 4
+### Version 2, 4, and 6
 
 Algorithms: XChaCha20, BLAKE2b
 
 The header `h` will depend on the exact version and mode being used
 , as well as the prefix `pie` (with a trailing period). It will be one of
 (`k2.local-wrap.pie.`, `k2.secret-wrap.pie.`, `k4.local-wrap.pie.`,
-`k4.secret-wrap.pie.`).
+`k4.secret-wrap.pie.`, `k6.local-wrap.pie.`,`k6.secret-wrap.pie.`).
 
-#### V2/V4 Encryption
+#### V2/V4/V6 Encryption
 
 Given a plaintext key `ptk` and wrapping key `wk`:
 
@@ -122,7 +124,7 @@ Given a plaintext key `ptk` and wrapping key `wk`:
    (This will return a 256-bit (32-byte) output.)
 7. Return `base64url(t || n || c)`.
 
-#### V2/V4 Decryption
+#### V2/V4/V6 Decryption
 
 Given a base64url-encoded encrypted key `b`, and the wrapping key `wk`:
 
